@@ -6,13 +6,15 @@ import {
   deleteProduct,
   createProduct,
   updateProduct,
+  createProductReview,
+  getTopProducts
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 // Routes for fetching all products and creating a new product
 router.route('/').get(getProducts).post(protect, admin, createProduct);
-
-// Routes for fetching, updating, and deleting a single product by ID
+router.route('/:id/reviews').post(protect, createProductReview)
+router.get('/top', getTopProducts)
 router
   .route('/:id')
   .get(getProductById)
