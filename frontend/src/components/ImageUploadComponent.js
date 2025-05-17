@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import {Button} from 'react-bootstrap'
-import axios from 'axios';
+import React, { useState } from "react";
+import { Button } from "react-bootstrap";
+import axios from "axios";
 
 const ImageUploadComponent = () => {
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -13,13 +13,17 @@ const ImageUploadComponent = () => {
   const handleUpload = async () => {
     try {
       const formData = new FormData();
-      formData.append('image', image);
+      formData.append("image", image);
 
-      const response = await axios.post('/api/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const response = await axios.post(
+        "http://localhost:8000/api/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
 
       setImageUrl(response.data.imageUrl);
     } catch (error) {

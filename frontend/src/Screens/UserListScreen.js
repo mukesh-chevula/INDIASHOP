@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
-import { listUsers, deleteUser } from '../actions/userActions';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useEffect, useState } from "react";
+import { Table, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { listUsers, deleteUser } from "../actions/userActions";
 
 const UserListScreen = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize navigate hook
-  const [successDelete, setSuccessDelete] = useState(false); // State to track success of delete operation
+  const [successDelete, setSuccessDelete] = useState(false);
 
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
@@ -21,29 +18,33 @@ const UserListScreen = () => {
   const userDelete = useSelector((state) => state.userDelete);
 
   const deleteHandler = (id) => {
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm("Are you sure?")) {
       dispatch(deleteUser(id));
     }
+  };
+
+  const editHandler = (id) => {
+    window.location.href = `/admin/user/${id}/edit`;
   };
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else {
-      navigate('/login');
-    }  
-}, [dispatch, navigate,successDelete, userInfo])
+      window.location.href = "/login";
+    }
+  }, [dispatch, successDelete, userInfo]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (userDelete.success) {
-      setSuccessDelete(true); // Set successDelete to true when userDelete.success is true
+      setSuccessDelete(true);
     }
   }, [userDelete]);
 
   useEffect(() => {
     if (successDelete) {
-      dispatch(listUsers()); // Reload user list after successful deletion
-      setSuccessDelete(false); // Reset successDelete
+      dispatch(listUsers());
+      setSuccessDelete(false);
     }
   }, [dispatch, successDelete]);
 
@@ -53,9 +54,9 @@ const UserListScreen = () => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className='table-sm'>
+        <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
               <th>ID</th>
@@ -75,23 +76,25 @@ const UserListScreen = () => {
                 </td>
                 <td>
                   {user.isAdmin ? (
-                    <i className='fas fa-check' style={{ color: 'green' }}></i>
+                    <i className="fas fa-check" style={{ color: "green" }}></i>
                   ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                    <i className="fas fa-times" style={{ color: "red" }}></i>
                   )}
                 </td>
                 <td>
-                <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant='light' className='btn-sm'>
-                      <i className='fas fa-edit'></i>
-                    </Button>
-                  </LinkContainer>
                   <Button
-                    variant='danger'
-                    className='btn-sm'
+                    variant="light"
+                    className="btn-sm me-2"
+                    onClick={() => editHandler(user._id)}
+                  >
+                    <i className="fas fa-edit"></i>
+                  </Button>
+                  <Button
+                    variant="danger"
+                    className="btn-sm"
                     onClick={() => deleteHandler(user._id)}
                   >
-                    <i className='fas fa-trash'></i>
+                    <i className="fas fa-trash"></i>
                   </Button>
                 </td>
               </tr>

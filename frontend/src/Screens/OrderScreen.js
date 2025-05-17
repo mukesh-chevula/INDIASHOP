@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react';
-import { PayPalButton } from 'react-paypal-button-v2';
-import { Link, useParams } from 'react-router-dom';
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
-import {
-  payOrder,
-  deliverOrder,
-} from '../actions/orderActions';
+import React, { useEffect } from "react";
+import { PayPalButton } from "@repeatgg/react-paypal-button-v2";
+import { Link, useParams } from "react-router-dom";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { payOrder, deliverOrder } from "../actions/orderActions";
 import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_SUCCESS,
   ORDER_PAY_RESET,
-} from '../constants/orderConstants';
+} from "../constants/orderConstants";
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -45,10 +42,10 @@ const OrderScreen = () => {
   useEffect(() => {
     const addPayPalScript = async () => {
       try {
-        const response = await fetch('/api/config/paypal');
+        const response = await fetch("http://localhost:8000/api/config/paypal");
         const { clientId } = await response.json();
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
+        const script = document.createElement("script");
+        script.type = "text/javascript";
         script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
         script.async = true;
         script.onload = () => {
@@ -56,17 +53,20 @@ const OrderScreen = () => {
         };
         document.body.appendChild(script);
       } catch (error) {
-        console.error('Error fetching PayPal client ID:', error);
+        console.error("Error fetching PayPal client ID:", error);
       }
     };
 
     const fetchOrderDetails = async () => {
       try {
-        const response = await fetch(`/api/orders/${orderId}`, {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8000/api/orders/${orderId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
         const data = await response.json();
         dispatch({
           type: ORDER_DETAILS_SUCCESS,
@@ -105,13 +105,13 @@ const OrderScreen = () => {
   return loading ? (
     <Loader />
   ) : error ? (
-    <Message variant='danger'>{error}</Message>
+    <Message variant="danger">{error}</Message>
   ) : (
     <>
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             {order && order.user && (
               <ListGroup.Item>
                 <h2>Shipping</h2>
@@ -119,21 +119,21 @@ const OrderScreen = () => {
                   <strong>Name: </strong> {order.user.name}
                 </p>
                 <p>
-                  <strong>Email: </strong>{' '}
+                  <strong>Email: </strong>{" "}
                   <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
                 </p>
                 <p>
                   <strong>Address:</strong>
-                  {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-                  {order.shippingAddress.postalCode},{' '}
+                  {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
+                  {order.shippingAddress.postalCode},{" "}
                   {order.shippingAddress.country}
                 </p>
                 {order.isDelivered ? (
-                  <Message variant='success'>
+                  <Message variant="success">
                     Delivered on {order.deliveredAt}
                   </Message>
                 ) : (
-                  <Message variant='danger'>Not Delivered</Message>
+                  <Message variant="danger">Not Delivered</Message>
                 )}
               </ListGroup.Item>
             )}
@@ -145,9 +145,9 @@ const OrderScreen = () => {
                 {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
+                <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
-                <Message variant='danger'>Not Paid</Message>
+                <Message variant="danger">Not Paid</Message>
               )}
             </ListGroup.Item>
 
@@ -156,7 +156,7 @@ const OrderScreen = () => {
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
@@ -186,7 +186,7 @@ const OrderScreen = () => {
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
@@ -224,17 +224,20 @@ const OrderScreen = () => {
                 </ListGroup.Item>
               )}
               {loadingDeliver && <Loader />}
-              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                <ListGroup.Item>
-                  <Button
-                    type='button'
-                    className='btn btn-block'
-                    onClick={deliverHandler}
-                  >
-                    Mark As Delivered
-                  </Button>
-                </ListGroup.Item>
-              )}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={deliverHandler}
+                    >
+                      Mark As Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>
