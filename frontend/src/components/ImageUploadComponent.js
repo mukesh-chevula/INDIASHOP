@@ -16,7 +16,7 @@ const ImageUploadComponent = () => {
       formData.append("image", image);
 
       const response = await axios.post(
-        "http://localhost:8000/api/upload",
+        "https://indiashop-y7ma.onrender.com/api/upload",
         formData,
         {
           headers: {
