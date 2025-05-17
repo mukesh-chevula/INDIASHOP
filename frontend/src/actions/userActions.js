@@ -40,7 +40,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/users/login",
+      "https://indiashop-y7ma.onrender.com/api/users/login",
       { email, password },
       config
     );
@@ -84,7 +84,7 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/users",
+      "https://indiashop-y7ma.onrender.com/api/users",
       { name, email, password },
       config
     );
@@ -127,7 +127,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(
-      `http://localhost:8000/api/users/${id}`,
+      `https://indiashop-y7ma.onrender.com/api/users/${id}`,
       config
     );
 
@@ -165,7 +165,7 @@ export const updateUserProfile =
       };
 
       const { data } = await axios.put(
-        `http://localhost:8000/api/users/profile`,
+        `https://indiashop-y7ma.onrender.com/api/users/profile`,
         { id, name, email, password },
         config
       );
@@ -207,7 +207,7 @@ export const listUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`http://localhost:8000/api/users`, config);
+    const { data } = await axios.get(`https://indiashop-y7ma.onrender.com/api/users`, config);
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -239,7 +239,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`http://localhost:8000/api/users/${id}`, config); // Changed the endpoint to http://localhost:8000/api/users/${id}
+    await axios.delete(`https://indiashop-y7ma.onrender.com/api/users/${id}`, config); // Changed the endpoint to https://indiashop-y7ma.onrender.com/api/users/${id}
 
     dispatch({ type: USER_DELETE_SUCCESS, payload: id }); // Use the id as payload for USER_DELETE_SUCCESS
   } catch (error) {
@@ -271,7 +271,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:8000/api/users/${user._id}`,
+      `https://indiashop-y7ma.onrender.com/api/users/${user._id}`,
       user,
       config
     );
