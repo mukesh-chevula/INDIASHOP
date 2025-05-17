@@ -65,7 +65,7 @@ const ProductEditScreen = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:8000/api/upload",
+        "https://indiashop-y7ma.onrender.com/api/upload",
         formData,
         config
       );
