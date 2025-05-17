@@ -30,7 +30,7 @@ export const listProducts =
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       const { data } = await axios.get(
-        `http://localhost:8000/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+        `https://indiashop-y7ma.onrender.com/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
       );
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
@@ -49,7 +49,7 @@ export const listProductsDetails = (id) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
     const { data } = await axios.get(
-      `http://localhost:8000/api/products/${id}`
+      `https://indiashop-y7ma.onrender.com/api/products/${id}`
     );
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
@@ -80,7 +80,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`http://localhost:8000/api/products/${id}`, config);
+    await axios.delete(`https://indiashop-y7ma.onrender.com/api/products/${id}`, config);
 
     dispatch({
       type: PRODUCT_DELETE_SUCCESS,
@@ -113,7 +113,7 @@ export const createProduct = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(
-      `http://localhost:8000/api/products`,
+      `https://indiashop-y7ma.onrender.com/api/products`,
       {},
       config
     );
@@ -151,7 +151,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:8000/api/products/${product._id}`,
+      `https://indiashop-y7ma.onrender.com/api/products/${product._id}`,
       product,
       config
     );
@@ -190,7 +190,7 @@ export const createProductReview =
       };
 
       await axios.post(
-        `http://localhost:8000/api/products/${productId}/reviews`,
+        `https://indiashop-y7ma.onrender.com/api/products/${productId}/reviews`,
         review,
         config
       );
@@ -213,7 +213,7 @@ export const listTopProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST });
 
-    const { data } = await axios.get(`http://localhost:8000/api/products/top`);
+    const { data } = await axios.get(`https://indiashop-y7ma.onrender.com/api/products/top`);
 
     dispatch({
       type: PRODUCT_TOP_SUCCESS,
