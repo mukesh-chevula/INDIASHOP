@@ -42,7 +42,7 @@ const OrderScreen = () => {
   useEffect(() => {
     const addPayPalScript = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/config/paypal");
+        const response = await fetch("https://indiashop-y7ma.onrender.com/api/config/paypal");
         const { clientId } = await response.json();
         const script = document.createElement("script");
         script.type = "text/javascript";
@@ -60,7 +60,7 @@ const OrderScreen = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/orders/${orderId}`,
+          `https://indiashop-y7ma.onrender.com/api/orders/${orderId}`,
           {
             headers: {
               Authorization: `Bearer ${userInfo.token}`,
